@@ -9,7 +9,7 @@ if [ -n "$files" ]; then
   # Process each file
   echo "$files" | while IFS= read -r file; do
     # Apply autopep8 formatting
-    autopep8 --in-place --aggressive --aggressive "$file"
+    autopep8 --in-place --aggressive "$file"
     # Add the formatted file back to the staging area
     git add "$file"
   done

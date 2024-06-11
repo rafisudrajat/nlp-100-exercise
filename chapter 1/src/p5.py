@@ -34,7 +34,6 @@ def generate_letter_ngram(n: int, string) -> list[str]:
     for i in range(char_list_pointer - (n - 1)):
         for j in range(n):
             letter_pair.append(char_list[i + j])
-
         letter_ngram.append("".join(letter_pair))
         letter_pair = []
     return letter_ngram
