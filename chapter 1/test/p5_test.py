@@ -37,6 +37,32 @@ class TestP5Chapter1(unittest.TestCase):
             self, string: str, expected_output: list[str]):
         self.assertEqual(generate_letter_ngram(2, string), expected_output)
 
+    @parameterized.expand([
+        ("I am an NLPer",
+            [('I', 'am', 'an'), ('am', 'an', 'NLPer')]
+         ),
+        ("I am a Stanford University Student majoring in mechatronics",
+            [('I', 'am', 'a'), ('am', 'a', 'Stanford'), ('a', 'Stanford', 'University'), ('Stanford', 'University', 'Student'),
+                ('University', 'Student', 'majoring'), ('Student', 'majoring', 'in'), ('majoring', 'in', 'mechatronics')]
+         )
+    ])
+    def test_should_generate_word_trigram(
+            self, string: str, expected_output: list[tuple[str]]):
+        self.assertEqual(genereate_word_ngram(3, string), expected_output)
+
+    @parameterized.expand([
+        ("I am an NLPer",
+            ['Iam', 'ama', 'man', 'anN', 'nNL', 'NLP', 'LPe', 'Per']
+         ),
+        ("She is beautiful",
+            ['She', 'hei', 'eis', 'isb', 'sbe', 'bea',
+                'eau', 'aut', 'uti', 'tif', 'ifu', 'ful']
+         )
+    ])
+    def test_should_generate_letter_trigram(
+            self, string: str, expected_output: list[str]):
+        self.assertEqual(generate_letter_ngram(3, string), expected_output)
+
 
 if __name__ == "__main__":
     unittest.main()
