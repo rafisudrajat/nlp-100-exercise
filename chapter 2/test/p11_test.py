@@ -6,17 +6,25 @@ Replace every occurrence of a tab character into a space. Confirm the result by 
 import unittest
 from parameterized import parameterized_class
 from pathlib import Path
+import subprocess
+import os
 
 
-@parameterized_class(('input_file'), [
-    ('artifact/data/popular-names.txt'),
-    ('artifact/data/random-text.txt')
+@parameterized_class(('input_file',), [
+    ('artifact/data/popular-names.txt',),
+    ('artifact/data/random-text.txt',)
 ])
 class TestP11Chapter2(unittest.TestCase):
 
     def test_should_replace_tab_into_space(self):
-        # Open the input file for reading and the output file for writing
-        expected_output_file = "artifact/data/popular-names-expected-p11.txt"
+        # Get the base name of the file (e.g., 'popular-names.txt')
+        base_name_input_file = os.path.basename(self.input_file)
+        # Split the base name into name and extension (e.g., 'popular-names'
+        # and '.txt')
+        file_name_input, file_extension = os.path.splitext(
+            base_name_input_file)
+
+        expected_output_file = f"artifact/data/{file_name_input}-expected-p11.txt"
         # Check if expected file output exists or not
         if not Path(expected_output_file).is_file():
             # If does not exist, then create the expected output
@@ -28,7 +36,11 @@ class TestP11Chapter2(unittest.TestCase):
                     # Write the modified line to the output file
                     outfile.write(modified_line)
 
-        actual_output_file = "artifact/data/popular-names-actual-p11.txt"
+        actual_output_file = f"artifact/data/{file_name_input}-actual-p11.txt"
+        # Call the solution script with two arguments
+        result = subprocess.run(
+            ['./src/p11.sh', self.input_file, actual_output_file], text=True)
+
         self.assertTrue(
             check_if_two_files_are_same(
                 actual_output_file,
